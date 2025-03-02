@@ -32,12 +32,15 @@ def preprocess_text(doc):
     return cleaned_text  
 
 cleaned_text = preprocess_text(doc)
-#print(cleaned_text)
-word_freq = Counter(cleaned_text)
-print(word_freq.most_common(NUM_OF_FLASHCARDS))
-flashcards = {}
-for tuple in word_freq:
-    flashcards[tuple] = ""
+
+def most_frequent_words(text):
+    word_freq = Counter(text)
+    most_common_words = word_freq.most_common(NUM_OF_FLASHCARDS)
+    return most_common_words
+    
+
+print(most_frequent_words(cleaned_text))
+
 
 
 
