@@ -1,4 +1,5 @@
 import spacy
+from collections import Counter
 
 NUM_OF_FLASHCARDS = 5
 
@@ -28,10 +29,15 @@ def preprocess_text(doc):
             token = token.lemma_.lower()
             cleaned_text.append(token)
 
-    return cleaned_text
-print("Cleaned text")      
-print(preprocess_text(doc))
+    return cleaned_text  
 
+cleaned_text = preprocess_text(doc)
+#print(cleaned_text)
+word_freq = Counter(cleaned_text)
+print(word_freq.most_common(NUM_OF_FLASHCARDS))
+flashcards = {}
+for tuple in word_freq:
+    flashcards[tuple] = ""
 
 
 
