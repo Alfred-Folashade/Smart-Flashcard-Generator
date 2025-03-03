@@ -1,6 +1,9 @@
 import spacy
 from collections import Counter
+from freedictionaryapi.clients.sync_client import DictionaryApiClient
+from freedictionaryapi.errors import DictionaryApiError
 
+client = DictionaryApiClient()
 NUM_OF_FLASHCARDS = 5
 
 #load the language model
@@ -25,7 +28,7 @@ def preprocess_text(doc):
     """
     cleaned_text = []  
     for token in doc:
-        if not token.is_punct:
+        if not token.is_punct and not token.is_stop:
             token = token.lemma_.lower()
             cleaned_text.append(token)
 
@@ -37,9 +40,21 @@ def most_frequent_words(text):
     word_freq = Counter(text)
     most_common_words = word_freq.most_common(NUM_OF_FLASHCARDS)
     return most_common_words
-    
 
-print(most_frequent_words(cleaned_text))
+
+
+most_common_words = most_frequent_words(cleaned_text)
+print(most_common_words)
+flashcards= []
+for word in most_common_words:
+    try:
+        
+        parser = client.fetch_parser(word[0])
+        phrase = parser.word
+        print(phrase.word , parser.get_all_definitions())
+    except DictionaryApiError:
+        print("Api error")
+#print(flashcards)
 
 
 
