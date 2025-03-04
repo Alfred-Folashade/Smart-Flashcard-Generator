@@ -41,6 +41,26 @@ def most_frequent_words(text):
     most_common_words = word_freq.most_common(NUM_OF_FLASHCARDS)
     return most_common_words
 
+def get_correct_definition(token_context, meanings):
+    token_context_doc = nlp(token_context)
+    
+    definitions_dict ={}
+    for definition in meanings.definitions:
+        definition_doc = nlp(definition)
+        definitions_dict.update(definition, token_context_doc.similarity(definition_doc))
+    
+   
+    max_score=0.0
+
+    for definition, score in definitions_dict.items:
+        if(score>max_score):
+            correct_definition=definition
+            max_score=score
+    
+    return correct_definition
+    
+    
+    
 
 
 most_common_words = most_frequent_words(cleaned_text)
