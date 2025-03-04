@@ -1,1 +1,2 @@
 # Smart-Flashcard-Generator
+This project is an intelligent vocabulary flashcard generator. It processes input text to identify frequently used words and retrieves candidate definitions from a dictionary API. By analyzing the surrounding context using NLP techniques and embedding-based similarity, the system selects the most contextually appropriate definition for each word. The result is a set of flashcards that present the best-fit meaning, making vocabulary learning more targeted and effective.
