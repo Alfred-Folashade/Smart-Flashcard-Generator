@@ -1,4 +1,5 @@
 import spacy
+import freedictionaryapi
 from collections import Counter
 from freedictionaryapi.clients.sync_client import DictionaryApiClient
 from freedictionaryapi.errors import DictionaryApiError
@@ -41,18 +42,20 @@ def most_frequent_words(text):
     most_common_words = word_freq.most_common(NUM_OF_FLASHCARDS)
     return most_common_words
 
-def get_correct_definition(token_context, meanings):
+def get_correct_definition(token_context, definitions: list[freedictionaryapi.types.Definition]):
     token_context_doc = nlp(token_context)
     
     definitions_dict ={}
-    for definition in meanings.definitions:
-        definition_doc = nlp(definition)
-        definitions_dict.update(definition, token_context_doc.similarity(definition_doc))
+    for definition in definitions:    
+        definition_str: str = str(definition)
+        definition_doc = nlp(definition_str)
+        definitions_dict.update({definition_str : token_context_doc.similarity(definition_doc)})
+        
     
    
     max_score=0.0
 
-    for definition, score in definitions_dict.items:
+    for definition, score in definitions_dict.items():
         if(score>max_score):
             correct_definition=definition
             max_score=score
@@ -66,16 +69,22 @@ def get_correct_definition(token_context, meanings):
 most_common_words = most_frequent_words(cleaned_text)
 print(most_common_words)
 flashcards= []
-for word in most_common_words:
+for word, count in most_common_words:
     try:
-        
-        parser = client.fetch_parser(word[0])
+        parser = client.fetch_parser(word)
         phrase = parser.word
-        print(phrase.word , parser.get_all_definitions())
+        meanings: list[freedictionaryapi.types.Meaning] = phrase.meanings
+        for meaning in meanings:
+            definitions: list[freedictionaryapi.types.Definition] = meaning.definitions
+            print(get_correct_definition(word, definitions))
+
     except DictionaryApiError:
-        print("Api error")
+        print('API error')
+
+    
+    
 #print(flashcards)
 
 
 
-
+client.close
