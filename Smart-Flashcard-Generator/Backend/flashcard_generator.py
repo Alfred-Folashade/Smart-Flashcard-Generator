@@ -46,18 +46,16 @@ def get_correct_definition(token_context, definitions: list[freedictionaryapi.ty
     token_context_doc = nlp(token_context)
     
     definitions_dict ={}
-    for definition in definitions:    
-        definition_str: str = str(definition)
-        definition_doc = nlp(definition_str)
+    for definition in definitions:  
+        definition_str: str = str(definition.definition)
+        definition_doc = nlp(definition_str)    
         definitions_dict.update({definition_str : token_context_doc.similarity(definition_doc)})
-        
-    
-   
+       
     max_score=0.0
-
     for definition, score in definitions_dict.items():
+        
         if(score>max_score):
-            correct_definition=definition
+            correct_definition=definition       
             max_score=score
     
     return correct_definition
@@ -76,7 +74,7 @@ for word, count in most_common_words:
         meanings: list[freedictionaryapi.types.Meaning] = phrase.meanings
         for meaning in meanings:
             definitions: list[freedictionaryapi.types.Definition] = meaning.definitions
-            print(get_correct_definition(word, definitions))
+        print(get_correct_definition(word, definitions)) 
 
     except DictionaryApiError:
         print('API error')
