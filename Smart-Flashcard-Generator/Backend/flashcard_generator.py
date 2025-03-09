@@ -3,6 +3,7 @@ import freedictionaryapi
 from collections import Counter
 from freedictionaryapi.clients.sync_client import DictionaryApiClient
 from freedictionaryapi.errors import DictionaryApiError
+import numpy as np
 
 client = DictionaryApiClient()
 NUM_OF_FLASHCARDS = 5
@@ -37,6 +38,12 @@ def preprocess_text(doc):
 
 cleaned_text = preprocess_text(doc)
 
+def cosine_similarity(vec1, vec2):
+    dot_product = np.dot(vec1, vec2)
+    norm_vec1 = np.linalg.norm(vec1)
+    norm_vec2 = np.linalg.norm(vec2)
+    return dot_product / (norm_vec1 * norm_vec2)
+
 def most_frequent_words(text):
     word_freq = Counter(text)
     most_common_words = word_freq.most_common(NUM_OF_FLASHCARDS)
@@ -60,7 +67,17 @@ def get_correct_definition(token_context, definitions: list[freedictionaryapi.ty
     for definition in definitions:  
         definition_str: str = str(definition)
         definition_doc = nlp(definition_str)    
-        definitions_dict.update({definition_str : token_context_doc.similarity(definition_doc)})
+        definition_doc_cleaned = preprocess_text(definition_doc)
+        definition_doc_vectors = []
+        n=0
+        sum_of_vectors=0
+        for token in definition_doc_cleaned:
+            token_context_vectors.append(nlp(token).vector)
+            sum_of_vectors=sum_of_vectors+nlp(token).vector
+            n=n+1
+
+        definition_agg = sum_of_vectors/n
+        definitions_dict.update({definition_str : token_context_agg.simi})
        
     max_score=0.0
     for definition, score in definitions_dict.items():
