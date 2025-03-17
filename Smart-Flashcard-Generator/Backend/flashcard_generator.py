@@ -22,20 +22,13 @@ else:
 app = Flask(__name__, template_folder=template_dir)
 
 
-@app.route('/')
-def home():
-    return render_template('flashcard_home')
-
-@app.route('/read-formtext', methods=['POST'])
-def read_formtext():
-    text = request.form['content']
-    
 
 
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+
+
     
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
@@ -49,9 +42,7 @@ NUM_OF_FLASHCARDS = 10
 #load the language model
 nlp = spacy.load('en_core_web_lg')
 
-#Create an nlp object
-text = "Python is a high-level, general-purpose programming language. Its design philosophy emphasizes code readability with the use of significant indentation. Python is dynamically type-checked and garbage-collected. It supports multiple programming paradigms, including structured (particularly procedural), object-oriented and functional programming. It is often described as a 'batteries included' language due to its comprehensive standard library. Guido van Rossum began working on Python in the late 1980s as a successor to the ABC programming language and first released it in 1991 as Python 0.9.0.[36] Python 2.0 was released in 2000. Python 3.0, released in 2008, was a major revision not completely backward-compatible with earlier versions. Python 2.7.18, released in 2020, was the last release of Python 2. Python consistently ranks as one of the most popular programming languages, and has gained widespread use in the machine learning community."
-doc = nlp(text) #doc is a sequence of token objects
+
 
 
 
@@ -75,7 +66,7 @@ def preprocess_text(doc):
 
     return cleaned_text  
 
-cleaned_text = preprocess_text(doc)
+
 
 def most_frequent_words(text):
     word_freq = Counter(text)
@@ -103,26 +94,43 @@ def get_correct_definition(word, token_context, definitions: list[freedictionary
             
     print(completion.choices[0].message.content)
     
+def generate(text):
+    #Create an nlp object
+    #text = "Python is a high-level, general-purpose programming language. Its design philosophy emphasizes code readability with the use of significant indentation. Python is dynamically type-checked and garbage-collected. It supports multiple programming paradigms, including structured (particularly procedural), object-oriented and functional programming. It is often described as a 'batteries included' language due to its comprehensive standard library. Guido van Rossum began working on Python in the late 1980s as a successor to the ABC programming language and first released it in 1991 as Python 0.9.0.[36] Python 2.0 was released in 2000. Python 3.0, released in 2008, was a major revision not completely backward-compatible with earlier versions. Python 2.7.18, released in 2020, was the last release of Python 2. Python consistently ranks as one of the most popular programming languages, and has gained widespread use in the machine learning community."
+    doc = nlp(text) #doc is a sequence of token objects
+    cleaned_text = preprocess_text(doc)
+    most_common_words = most_frequent_words(cleaned_text)
+    print(most_common_words)
+    flashcards= []
+    for word, count in most_common_words:
+        try:
+            parser = client.fetch_parser(word)
+            phrase = parser.word
+            meanings: list[freedictionaryapi.types.Meaning] = phrase.meanings
+            for meaning in meanings:
+                definitions: list[freedictionaryapi.types.Definition] = meaning.definitions
+            print("Working...")
+            print(get_correct_definition(word, text, definitions))
 
-most_common_words = most_frequent_words(cleaned_text)
-print(most_common_words)
-flashcards= []
-for word, count in most_common_words:
-    try:
-        parser = client.fetch_parser(word)
-        phrase = parser.word
-        meanings: list[freedictionaryapi.types.Meaning] = phrase.meanings
-        for meaning in meanings:
-            definitions: list[freedictionaryapi.types.Definition] = meaning.definitions
-        get_correct_definition(word, text, definitions)
-
-    except DictionaryApiError:
-        print('API error')
+        except DictionaryApiError:
+            print('API error')
 
     
     
 #print(flashcards)
+@app.route('/')
+def home():
+    return render_template('flashcard_home')
 
+
+
+@app.route('/read-formtext', methods=['POST'])
+def read_formtext():
+    text = request.form['content']
+    generate(text)
+    
+if __name__ == '__main__':
+    app.run(debug=True)
 client.close
 
 
