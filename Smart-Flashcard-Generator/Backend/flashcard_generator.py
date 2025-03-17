@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import os
 import spacy
 import freedictionaryapi
@@ -7,6 +7,8 @@ from freedictionaryapi.clients.sync_client import DictionaryApiClient
 from freedictionaryapi.errors import DictionaryApiError
 import numpy as np
 from dotenv import load_dotenv
+import secrets
+from flask_wtf import FlaskForm, CSRFProtect
 
 template_dir = os.path.abspath('/Users/alfredfolashade/Smart-Flashcard-Generator/Smart-Flashcard-Generator/Frontend/templates')
 print(f"Looking for templates in: {template_dir}")
@@ -19,9 +21,18 @@ else:
 
 app = Flask(__name__, template_folder=template_dir)
 
+
 @app.route('/')
 def home():
     return render_template('flashcard_home')
+
+@app.route('/read-formtext', methods=['POST'])
+def read_formtext():
+    text = request.form['content']
+    
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
