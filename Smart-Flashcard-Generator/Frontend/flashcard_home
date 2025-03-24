@@ -103,11 +103,13 @@
   <div class="cloud" style="top: 500px; left: 300px;"></div>
   <div class="cloud" style="top: 600px; left: 150px;"></div>
   
+  const [content, setContent] = useState("");
+
   <!-- Text box in the middle -->
   <div class="text-box-container">
     <form action="" method="post">
     <h2 class="text-box-title">Enter Your Text</h2>
-    <textarea name="content" class="text-input" placeholder="Type your message here...">{{ request.form['content']}}</textarea>
+    <textarea value={content} class="text-input" placeholder="Type your message here..."></textarea>
     <button class="submit-button">Submit</button>
     </form>
   </div>
