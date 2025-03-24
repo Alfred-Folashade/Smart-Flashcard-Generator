@@ -105,7 +105,7 @@
   
   <!-- Text box in the middle -->
   <div class="text-box-container">
-    <form action="{{ url_for('read_formtext')}}" method="post">
+    <form action="" method="post">
     <h2 class="text-box-title">Enter Your Text</h2>
     <textarea name="content" class="text-input" placeholder="Type your message here...">{{ request.form['content']}}</textarea>
     <button class="submit-button">Submit</button>

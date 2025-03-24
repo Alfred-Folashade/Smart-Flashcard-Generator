@@ -44,9 +44,6 @@ nlp = spacy.load('en_core_web_lg')
 
 
 
-
-
-
 def preprocess_text(doc):
     """
     Preprocess function takes a doc object and 
@@ -127,8 +124,9 @@ def home():
 @app.route('/read-formtext', methods=['POST'])
 def read_formtext():
     text = request.form['content']
-    generate(text)
-    
+    #generate(text)
+    return render_template('Flashcard_frontend.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
 client.close
