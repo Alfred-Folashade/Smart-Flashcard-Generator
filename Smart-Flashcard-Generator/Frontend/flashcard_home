@@ -103,7 +103,7 @@
   <div class="cloud" style="top: 500px; left: 300px;"></div>
   <div class="cloud" style="top: 600px; left: 150px;"></div>
   
-  const [content, setContent] = useState("");
+  
 
   <!-- Text box in the middle -->
   <div class="text-box-container">
