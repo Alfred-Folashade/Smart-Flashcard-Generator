@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from flask_cors import CORS
 import os
 import spacy
 import freedictionaryapi
@@ -10,17 +11,10 @@ from dotenv import load_dotenv
 import secrets
 from flask_wtf import FlaskForm, CSRFProtect
 
-template_dir = os.path.abspath('/Users/alfredfolashade/Smart-Flashcard-Generator/Smart-Flashcard-Generator/Frontend/templates')
-print(f"Looking for templates in: {template_dir}")
-print(f"Directory exists: {os.path.exists(template_dir)}")
 
-if os.path.exists(template_dir):
-    print(f"Files in directory: {os.listdir(template_dir)}")
-else:
-    print("Directory not found!")
 
-app = Flask(__name__, template_folder=template_dir)
-
+app = Flask(__name__)
+CORS(app)
 
 
 
@@ -115,17 +109,15 @@ def generate(text):
     
     
 #print(flashcards)
-@app.route('/')
-def home():
-    return render_template('flashcard_home')
 
 
 
 @app.route('/read-formtext', methods=['POST'])
 def read_formtext():
-    text = request.form['content']
-    #generate(text)
-    return render_template('Flashcard_frontend.html')
+    data = request.get_json()
+    text = data.get('text')
+    print(text)
+    return ( 200)  # ✅ (data, status_code)
 
 if __name__ == '__main__':
     app.run(debug=True)

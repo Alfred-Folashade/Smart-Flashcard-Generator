@@ -1,6 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './Home.modules.css'
+import axios from 'axios';
+
 const Home = () => {
+    const [formData, setFormData] = useState({
+        text: ''
+    });
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+          });
+    }
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+    
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/read-formtext', formData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+           
+        } catch (error) {
+            alert(error)
+            console.error('Error submitting form:', error);
+            alert('Failed to submit form');
+        }
+    }
+    
     return (
         
         <div>
@@ -14,10 +45,10 @@ const Home = () => {
                    
         
             <div class="text-box-container">
-                <form action="" method="post">
-                <h2 class="text-box-title">Enter Your Text</h2>
-                <textarea  class="text-input" placeholder="Type your message here..."></textarea>
-                <button class="submit-button">Submit</button>
+                <form onSubmit={handleSubmit} method="post">
+                    <h2 class="text-box-title">Enter Your Text</h2>
+                    <textarea name="text" class="text-input" value={formData.message} onChange={handleChange} placeholder="Type your message here..."></textarea>
+                    <button class="submit-button">Submit</button>
                 </form>
             </div>
         </div>
