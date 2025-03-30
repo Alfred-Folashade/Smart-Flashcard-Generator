@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import styles from './Flashcards.modules.css'
 
 
 
@@ -28,8 +28,6 @@ function Flashcards() {
       </div>
     );
   };
-
-  // Main App component
  
     const [currentIndex, setCurrentIndex] = useState(0);
     const [flipped, setFlipped] = useState(false);
