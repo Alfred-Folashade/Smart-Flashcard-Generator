@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import styles from './Home.modules.css'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-    const [formData, setFormData] = useState({
-        text: ''
-    });
+    const [formData, setFormData] = useState({text: ''});
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({
@@ -23,6 +24,7 @@ const Home = () => {
                     'Content-Type': 'application/json'
                 }
             });
+            navigate("/Flashcards")
     
            
         } catch (error) {

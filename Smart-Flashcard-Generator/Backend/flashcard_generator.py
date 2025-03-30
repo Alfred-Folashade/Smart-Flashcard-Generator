@@ -117,7 +117,7 @@ def read_formtext():
     data = request.get_json()
     text = data.get('text')
     print(text)
-    return ( 200)  # ✅ (data, status_code)
+    return ( "200")  
 
 if __name__ == '__main__':
     app.run(debug=True)
