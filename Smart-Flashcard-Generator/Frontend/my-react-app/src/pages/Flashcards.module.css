@@ -1,0 +1,117 @@
+/* Ensure the entire viewport has the gradient background */
+.page {
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #87CEEB, #00BFFF);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Cloud Styles - Static Clouds */
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  width: 100px;
+  height: 60px;
+  opacity: 0.8;
+}
+
+.cloud:before, .cloud:after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.cloud:before {
+  top: -20px;
+  left: 10px;
+}
+
+.cloud:after {
+  top: -10px;
+  right: 10px;
+}
+
+/* Flashcard Container */
+.flashcardContainer {
+  position: relative;
+  width: 300px;
+  margin: 100px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  text-align: center;
+  z-index: 1;
+}
+
+/* Flashcard Styles with Flip Animation */
+.flashcard {
+  font-size: 24px;
+  padding: 40px 20px;
+  border: 2px solid #00BFFF;
+  border-radius: 10px;
+  background-color: #E0FFFF;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+  min-height: 150px;
+  cursor: pointer;
+}
+
+.flashcard.flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard .front, .flashcard .back {
+  position: absolute;
+  width: 100%;
+  backface-visibility: hidden;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.flashcard .back {
+  transform: rotateY(180deg);
+}
+
+/* Button Styles */
+.btn {
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #00BFFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #1E90FF;
+}
+
+/* Gamified Progress Bar */
+.progressBar {
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  height: 10px;
+}
+
+.progressBarFill {
+  height: 10px;
+  background-color: #00BFFF;
+  width: 0%;
+  transition: width 0.5s;
+}
