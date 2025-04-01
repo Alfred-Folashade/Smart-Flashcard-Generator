@@ -31,7 +31,7 @@ from openai import OpenAI
 clientGpt = OpenAI(api_key=api_key)
 
 client = DictionaryApiClient()
-NUM_OF_FLASHCARDS = 10
+NUM_OF_FLASHCARDS = 4
 
 #load the language model
 nlp = spacy.load('en_core_web_lg')
@@ -83,7 +83,7 @@ def get_correct_definition(word, token_context, definitions: list[freedictionary
                 
             )
             
-    print(completion.choices[0].message.content)
+    
     
 def generate(text):
     #Create an nlp object
@@ -100,7 +100,7 @@ def generate(text):
             meanings: list[freedictionaryapi.types.Meaning] = phrase.meanings
             for meaning in meanings:
                 definitions: list[freedictionaryapi.types.Definition] = meaning.definitions
-            print("Working...")
+           
             print(get_correct_definition(word, text, definitions))
 
         except DictionaryApiError:
@@ -116,7 +116,7 @@ def generate(text):
 def read_formtext():
     data = request.get_json()
     text = data.get('text')
-    print(text)
+    generate(text)
     return ( "200")  
 
 if __name__ == '__main__':
