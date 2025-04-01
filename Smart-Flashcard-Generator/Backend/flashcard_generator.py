@@ -83,7 +83,7 @@ def get_correct_definition(word, token_context, definitions: list[freedictionary
                 
             )
             
-    
+    return(completion.choices[0].message.content)
     
 def generate(text):
     #Create an nlp object
@@ -92,7 +92,7 @@ def generate(text):
     cleaned_text = preprocess_text(doc)
     most_common_words = most_frequent_words(cleaned_text)
     print(most_common_words)
-    flashcards= []
+    flashcards= {}
     for word, count in most_common_words:
         try:
             parser = client.fetch_parser(word)
@@ -100,11 +100,13 @@ def generate(text):
             meanings: list[freedictionaryapi.types.Meaning] = phrase.meanings
             for meaning in meanings:
                 definitions: list[freedictionaryapi.types.Definition] = meaning.definitions
-           
-            print(get_correct_definition(word, text, definitions))
+            correct_definition = get_correct_definition(word, text, definitions)
+            flashcards.update({word : correct_definition})
+            print(correct_definition)
 
         except DictionaryApiError:
             print('API error')
+    return flashcards
 
     
     
@@ -116,7 +118,9 @@ def generate(text):
 def read_formtext():
     data = request.get_json()
     text = data.get('text')
-    generate(text)
+    flashcard_dicts = {}
+    flashcard_dicts= generate(text)
+    print(flashcard_dicts)
     return ( "200")  
 
 if __name__ == '__main__':
