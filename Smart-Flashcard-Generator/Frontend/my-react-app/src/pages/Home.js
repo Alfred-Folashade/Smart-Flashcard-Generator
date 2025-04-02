@@ -24,7 +24,8 @@ const Home = () => {
                     'Content-Type': 'application/json'
                 }
             });
-            navigate("/Flashcards")
+            console.log(response.data)
+            navigate("/Flashcards", {state: response.data})
     
            
         } catch (error) {

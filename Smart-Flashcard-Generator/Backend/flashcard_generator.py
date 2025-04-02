@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
 import spacy
@@ -121,7 +121,8 @@ def read_formtext():
     flashcard_dicts = {}
     flashcard_dicts= generate(text)
     print(flashcard_dicts)
-    return ( "200")  
+   
+    return jsonify(flashcard_dicts)  
 
 if __name__ == '__main__':
     app.run(debug=True)
