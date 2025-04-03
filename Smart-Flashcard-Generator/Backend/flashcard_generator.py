@@ -101,7 +101,7 @@ def generate(text):
             for meaning in meanings:
                 definitions: list[freedictionaryapi.types.Definition] = meaning.definitions
             correct_definition = get_correct_definition(word, text, definitions)
-            flashcards.update({word : correct_definition})
+            flashcards.update({"word: " + word : "definition: " + correct_definition})
             print(correct_definition)
 
         except DictionaryApiError:

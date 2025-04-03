@@ -1,23 +1,28 @@
 import React, { useState } from 'react';
 import styles from './Flashcards.module.css';
+import { useLocation } from "react-router-dom";
 
-// Sample flashcards data
+
+
+/*
 const flashcardsData = [
   { word: "Bonjour", definition: "Hello (in French)" },
   { word: "Gracias", definition: "Thank you (in Spanish)" },
   { word: "Au revoir", definition: "Goodbye (in French)" },
   { word: "Por favor", definition: "Please (in Spanish)" },
 ];
+*/
 
 // Flashcard component that handles the flip animation
-const Flashcard = ({ flashcard, flipped, onFlip }) => {
+const Flashcard = ({ flashcard, flipped, onFlip, index }) => {
   return (
     <div className={`${styles.flashcard} ${flipped ? styles.flipped : ""}`} onClick={onFlip}>
+      
       <div className={styles.front}>
-        {flashcard.word}
+        {flashcard[0].split("word: ")}
       </div>
       <div className={styles.back}>
-        {flashcard.definition}
+        {flashcard[1].split("definition: ")}
       </div>
     </div>
   );
@@ -25,6 +30,10 @@ const Flashcard = ({ flashcard, flipped, onFlip }) => {
 
 // Main Flashcards component
 const Flashcards = () => {
+  // Sample flashcards data
+  const location = useLocation();
+  const flashcardsData = Object.entries(location.state);
+  console.log(flashcardsData)
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const totalCards = flashcardsData.length;
@@ -52,10 +61,15 @@ const Flashcards = () => {
         <div className={styles.progressBar}>
           <div className={styles.progressBarFill} style={{ width: progressPercent + '%' }}></div>
         </div>
+       
+            
+        
         <Flashcard 
           flashcard={flashcardsData[currentIndex]} 
           flipped={flipped} 
           onFlip={handleFlip} 
+          index={currentIndex}
+          
         />
         <div>
           {flipped ? (
@@ -64,6 +78,7 @@ const Flashcards = () => {
             <button className={styles.btn} onClick={handleFlip}>Show Answer</button>
           )}
         </div>
+        
         <p>{currentIndex + 1} / {totalCards}</p>
       </div>
     </div>
