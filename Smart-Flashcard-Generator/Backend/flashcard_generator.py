@@ -125,7 +125,10 @@ def read_formtext():
     return jsonify(flashcard_dicts)  
 
 if __name__ == '__main__':
+    result = client.fetch_word_definition("palabra", language_code="es")
+    print(result)
     app.run(debug=True)
+    
 client.close
 
 

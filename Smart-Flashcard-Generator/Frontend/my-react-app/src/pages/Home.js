@@ -54,6 +54,43 @@ const Home = () => {
                     <button className={styles.submitButton}>Submit</button>
                 </form>
             </div>
+            <div className={styles.textBoxContainer} style={{marginTop: "20px"}}>
+                <h2 className={styles.textBoxTitle}>Upload a file</h2>
+                <div style={{height: "140px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <div 
+                        style={{
+                            width: "60px", 
+                            height: "60px", 
+                            borderRadius: "50%", 
+                            border: "2px dashed #1a73e8", 
+                            display: "flex", 
+                            justifyContent: "center", 
+                            alignItems: "center",
+                            cursor: "pointer",
+                            transition: "all 0.3s ease",
+                            backgroundColor: "transparent"
+                        }}
+                        onMouseOver={(e) => {
+                            e.currentTarget.style.backgroundColor = "rgba(26, 115, 232, 0.1)";
+                            e.currentTarget.style.border = "2px solid #1a73e8";
+                            e.currentTarget.style.transform = "scale(1.05)";
+                        }}
+                        onMouseOut={(e) => {
+                            e.currentTarget.style.backgroundColor = "transparent";
+                            e.currentTarget.style.border = "2px dashed #1a73e8";
+                            e.currentTarget.style.transform = "scale(1)";
+                        }}
+                    >
+                        <div style={{
+                            fontSize: "30px",
+                            color: "#1a73e8",
+                            fontWeight: "bold",
+                            lineHeight: "1",
+                            transition: "all 0.3s ease"
+                        }}>+</div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
   }

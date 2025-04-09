@@ -5,6 +5,7 @@
   background: linear-gradient(to bottom, #87CEEB, #00BFFF);
   overflow: hidden;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -19,6 +20,8 @@
   text-align: center;
   z-index: 10;
 }
+
+
 
 .textBoxTitle {
   margin: 0 0 20px 0;
