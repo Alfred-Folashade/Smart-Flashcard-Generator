@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import styles from './Home.module.css'
+import { useRef } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+
     const [formData, setFormData] = useState({text: ''});
 
     const navigate = useNavigate();
@@ -34,7 +36,13 @@ const Home = () => {
             alert('Failed to submit form');
         }
     }
-    
+ 
+    const hiddenFileInputRef = useRef(null);
+
+    const handleClick = () => {
+        hiddenFileInputRef.current.click();
+    }    
+
     return (
         
         <div className={styles.page}>
@@ -57,7 +65,7 @@ const Home = () => {
             <div className={styles.textBoxContainer} style={{marginTop: "20px"}}>
                 <h2 className={styles.textBoxTitle}>Upload a file</h2>
                 <div style={{height: "140px", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    <div 
+                    <div onClick={handleClick} 
                         style={{
                             width: "60px", 
                             height: "60px", 
@@ -89,6 +97,11 @@ const Home = () => {
                             transition: "all 0.3s ease"
                         }}>+</div>
                     </div>
+                    <input
+                    type="file"
+                    ref={hiddenFileInputRef}
+                    style={{ display: 'none' }}
+                    />
                 </div>
             </div>
         </div>
