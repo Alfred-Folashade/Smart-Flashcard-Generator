@@ -6,8 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
 
-    const [formData, setFormData] = useState({text: ''});
-    const [value, setValue] = useState('');
+    const [formData, setFormData] = useState({text: '', language: 'English'});
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -57,13 +56,13 @@ const Home = () => {
         
             <div className={styles.textBoxContainer}>
                 <form onSubmit={handleSubmit} method="post">
-                    <select value ={value} onChange={(e) => setValue(e.target.value)}>
+                    <select  name="language" value={formData.language} onChange={handleChange}>
                         <option value = "English">English</option>
                         <option value ="French">French</option>
                         <option value ="German">German</option>
                     </select>
                     <h2 className={styles.textBoxTitle}>Enter Your Text</h2>
-                    <textarea name="text" className={styles.textInput} value={formData.message} onChange={handleChange} placeholder="Type your message here..."></textarea>
+                    <textarea name="text" className={styles.textInput} value={formData.text} onChange={handleChange} placeholder="Type your message here..."></textarea>
                     <button className={styles.submitButton}>Submit</button>
                 </form>
             </div>

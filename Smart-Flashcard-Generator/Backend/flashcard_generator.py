@@ -118,15 +118,17 @@ def generate(text):
 def read_formtext():
     data = request.get_json()
     text = data.get('text')
+    language = data.get('language')
+    print(language)
+    print(text)
     flashcard_dicts = {}
-    flashcard_dicts= generate(text)
+    #flashcard_dicts= generate(text)
     print(flashcard_dicts)
    
     return jsonify(flashcard_dicts)  
 
 if __name__ == '__main__':
-    result = client.fetch_word_definition("palabra", language_code="es")
-    print(result)
+    
     app.run(debug=True)
     
 client.close
