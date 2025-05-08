@@ -57,7 +57,7 @@ def preprocess_text(doc):
     """
     cleaned_text = []  
     for token in doc:
-        if not token.is_punct and not token.is_stop:
+        if not token.is_punct and not token.is_stop and not token.is_digit:
             token = token.lemma_.lower()
             cleaned_text.append(token)
 
@@ -127,7 +127,8 @@ def read_formtext():
     data = request.get_json()
     text = data.get('text')
     language = data.get('language')
- 
+    print(language)
+    print(text)
     flashcard_dicts = {}
     flashcard_dicts= generate(text, language)
     print(flashcard_dicts)
