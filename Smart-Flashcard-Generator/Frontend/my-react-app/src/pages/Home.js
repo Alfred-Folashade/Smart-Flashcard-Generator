@@ -57,9 +57,9 @@ const Home = () => {
             <div className={styles.textBoxContainer}>
                 <form onSubmit={handleSubmit} method="post">
                     <select  name="language" value={formData.language} onChange={handleChange}>
-                        <option value = "English">English</option>
-                        <option value ="French">French</option>
-                        <option value ="German">German</option>
+                        <option name = "English" value = "English">English</option>
+                        <option name ="French" value ="French">French</option>
+                        <option name ="German" value ="German">German</option>
                     </select>
                     <h2 className={styles.textBoxTitle}>Enter Your Text</h2>
                     <textarea name="text" className={styles.textInput} value={formData.text} onChange={handleChange} placeholder="Type your message here..."></textarea>
