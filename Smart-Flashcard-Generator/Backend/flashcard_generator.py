@@ -10,7 +10,8 @@ import numpy as np
 from dotenv import load_dotenv
 import secrets
 from flask_wtf import FlaskForm, CSRFProtect
-
+import asyncio
+from googletrans import Translator
 
 
 app = Flask(__name__)
@@ -41,7 +42,6 @@ LANGUAGE_MODELS = {
 
 #load the language model
 nlp = spacy.load('en_core_web_lg')
-
 
 
 def preprocess_text(doc):
@@ -116,7 +116,11 @@ def generate(text, language):
             print('API error')
     return flashcards
 
-    
+async def translate_definition(definition):
+    translator = Translator()
+    result = await translator.translate(definition)
+    return result
+
     
 #print(flashcards)
 
@@ -136,7 +140,7 @@ def read_formtext():
     return jsonify(flashcard_dicts)  
 
 if __name__ == '__main__':
-    
+
     app.run(debug=True)
     
 client.close
