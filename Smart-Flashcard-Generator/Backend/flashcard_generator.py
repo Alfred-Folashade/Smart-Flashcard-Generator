@@ -114,6 +114,10 @@ def generate(text, language):
 
         except DictionaryApiError:
             print('API error')
+        if language!='English':
+            for word, definition in flashcards.items():
+                flashcards[word] = asyncio.run(translate_definition(definition))
+
     return flashcards
 
 async def translate_definition(definition):
