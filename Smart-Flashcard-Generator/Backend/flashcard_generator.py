@@ -6,13 +6,14 @@ import freedictionaryapi
 from collections import Counter
 from freedictionaryapi.clients.sync_client import DictionaryApiClient
 from freedictionaryapi.errors import DictionaryApiError
+from freedictionaryapi.languages import LanguageCodes
 import numpy as np
 from dotenv import load_dotenv
 import secrets
 from flask_wtf import FlaskForm, CSRFProtect
 import asyncio
 from googletrans import Translator
-
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -37,7 +38,7 @@ NUM_OF_FLASHCARDS = 4
 LANGUAGE_MODELS = {
     'English': 'en_core_web_lg',
     'Spanish': 'es_core_news_lg',
-    'French': 'fr_core_news_lg',
+    'French': 'fr_core_news_sm',
 }
 
 #load the language model
@@ -57,7 +58,7 @@ def preprocess_text(doc):
     """
     cleaned_text = []  
     for token in doc:
-        if not token.is_punct and not token.is_stop and not token.is_digit:
+        if not token.is_punct and not token.is_stop and token.is_alpha:
             token = token.lemma_.lower()
             cleaned_text.append(token)
 
@@ -70,26 +71,32 @@ def most_frequent_words(text):
     most_common_words = word_freq.most_common(NUM_OF_FLASHCARDS)
     return most_common_words
 
-def get_correct_definition(word, token_context, definitions: list[freedictionaryapi.types.Definition]):
+def get_correct_definition(words, token_context):
     token_context_doc = nlp(token_context)
 
-    completion = clientGpt.beta.chat.completions.parse(
-                model="gpt-4o-mini",
+    response = clientGpt.beta.chat.completions.create(
+                model="gpt-4-turbo",
                 messages=[
                     {"role": "system", "content": "You are an expert at word sense disambiguation."},
                     {"role": "user", "content": f"""
-                    I am going to give you a word along
-                    with its context and some possible definitons
-                    your job is to choose the most appropriate definition and return that definition only.
-                    Here is the word: {word}
-                    Here is the token context: {token_context}
-                    Here are the definitions: {definitions}"""}
+                    I am going to give you a list of words along with their context 
+                    your job is to choose the most appropriate English (not translations) definition and return the definitions
+                    as a JSON array of objects, where each object has "word" and "definition" Here are the words: {words}
+                    Here is the context: {token_context}
+                     """
+                     }
                 ],
-                temperature=1.0,
-                
+                temperature=0.5,
             )
+    
             
-    return(completion.choices[0].message.content)
+    try:
+            content = response.choices[0].message.content
+            return json.loads(content)
+    except json.JSONDecodeError:
+            print("Error: Failed to parse JSON response.")
+            print("Raw content was:", content)
+            return None
     
 def generate(text, language):
     #Create an nlp object
@@ -99,11 +106,12 @@ def generate(text, language):
     doc = nlp(text) #doc is a sequence of token objects
     cleaned_text = preprocess_text(doc)
     most_common_words = most_frequent_words(cleaned_text)
-    print(most_common_words)
+    print("word", most_common_words)
     flashcards= {}
     for word, count in most_common_words:
         try:
-            parser = client.fetch_parser(word)
+            parser = client.fetch_parser(word, LanguageCodes.FRENCH)
+            """
             phrase = parser.word
             meanings: list[freedictionaryapi.types.Meaning] = phrase.meanings
             for meaning in meanings:
@@ -111,7 +119,7 @@ def generate(text, language):
             correct_definition = get_correct_definition(word, text, definitions)
             flashcards.update({"word: " + word : "definition: " + correct_definition})
             print(correct_definition)
-
+            """
         except DictionaryApiError:
             print('API error')
         if language!='English':
