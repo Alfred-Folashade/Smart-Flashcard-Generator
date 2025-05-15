@@ -74,7 +74,7 @@ def get_correct_definition(words: list[str], token_context):
 
     prompt = f"""
     I am going to give you a list of words along with their context.
-    Your job is to choose the most appropriate but simple English definition in addition with translations where appropriate that would be suitable for a language learner and return the definitions
+    Your job is to choose the most appropriate but simple English definition in addition with english translations where appropriate that would be suitable for a language learner and return the definitions
     as a JSON array of objects, where each object has "word" and "definition". Do not include any other text.
     Here are the words:
     {words}
@@ -113,7 +113,7 @@ def generate(text, language):
     most_common_words = most_frequent_words(cleaned_text)
     print("word", most_common_words)
     flashcards= {}
-    flashcards = get_correct_definition
+    flashcards = get_correct_definition(most_common_words, text)
 
     return flashcards
 
@@ -134,7 +134,7 @@ def read_formtext():
     flashcard_dicts= generate(text, language)
     print(flashcard_dicts)
    
-    return jsonify(flashcard_dicts)  
+    return (flashcard_dicts)  
 
 if __name__ == '__main__':
 
