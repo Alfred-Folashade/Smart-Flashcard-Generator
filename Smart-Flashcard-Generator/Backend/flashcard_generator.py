@@ -117,18 +117,12 @@ def generate(text, language):
 
     return flashcards
 
-async def translate_definition(definition):
-    translator = Translator()
-    result = await translator.translate(definition)
-    return result
+
 
     
 #print(flashcards)
 
-defs = (get_correct_definition(["gato", "correr", "mesa"], ""))
-print(defs)
-for item in defs:
-    print(item["word"], "=>", item["definition"])
+
 @app.route('/read-formtext', methods=['POST'])
 def read_formtext():
     data = request.get_json()
