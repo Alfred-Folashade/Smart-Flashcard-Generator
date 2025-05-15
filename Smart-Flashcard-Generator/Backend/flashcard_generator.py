@@ -2,11 +2,9 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
 import spacy
-import freedictionaryapi
+
 from collections import Counter
-from freedictionaryapi.clients.sync_client import DictionaryApiClient
-from freedictionaryapi.errors import DictionaryApiError
-from freedictionaryapi.languages import LanguageCodes
+
 import numpy as np
 from dotenv import load_dotenv
 import secrets
@@ -14,6 +12,7 @@ from flask_wtf import FlaskForm, CSRFProtect
 import asyncio
 from googletrans import Translator
 import json
+import re
 
 app = Flask(__name__)
 CORS(app)
@@ -30,9 +29,9 @@ load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 
 from openai import OpenAI
-clientGpt = OpenAI(api_key=api_key)
+client = OpenAI(api_key=api_key)
 
-client = DictionaryApiClient()
+
 NUM_OF_FLASHCARDS = 4
 
 LANGUAGE_MODELS = {
@@ -71,32 +70,38 @@ def most_frequent_words(text):
     most_common_words = word_freq.most_common(NUM_OF_FLASHCARDS)
     return most_common_words
 
-def get_correct_definition(words, token_context):
-    token_context_doc = nlp(token_context)
+def get_correct_definition(words: list[str], token_context):
 
-    response = clientGpt.beta.chat.completions.create(
-                model="gpt-4-turbo",
-                messages=[
-                    {"role": "system", "content": "You are an expert at word sense disambiguation."},
-                    {"role": "user", "content": f"""
-                    I am going to give you a list of words along with their context 
-                    your job is to choose the most appropriate English (not translations) definition and return the definitions
-                    as a JSON array of objects, where each object has "word" and "definition" Here are the words: {words}
-                    Here is the context: {token_context}
-                     """
-                     }
-                ],
-                temperature=0.5,
-            )
-    
-            
+    prompt = f"""
+    I am going to give you a list of words along with their context.
+    Your job is to choose the most appropriate but simple English definition in addition with translations where appropriate that would be suitable for a language learner and return the definitions
+    as a JSON array of objects, where each object has "word" and "definition". Do not include any other text.
+    Here are the words:
+    {words}
+    Here is the context:
+    {token_context}
+    """
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are an expert at word sense disambiguation."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.5
+    )
+
+    content = response.choices[0].message.content
+
+    # Clean up any Markdown code block formatting
+    cleaned_content = re.sub(r"^```(?:json)?|```$", "", content.strip(), flags=re.MULTILINE).strip()
+
     try:
-            content = response.choices[0].message.content
-            return json.loads(content)
+        return json.loads(cleaned_content)
     except json.JSONDecodeError:
-            print("Error: Failed to parse JSON response.")
-            print("Raw content was:", content)
-            return None
+        print("Error: Failed to parse JSON response.")
+        print("Raw content was:", cleaned_content)
+        return None
     
 def generate(text, language):
     #Create an nlp object
@@ -136,8 +141,10 @@ async def translate_definition(definition):
     
 #print(flashcards)
 
-
-
+defs = (get_correct_definition(["gato", "correr", "mesa"], ""))
+print(defs)
+for item in defs:
+    print(item["word"], "=>", item["definition"])
 @app.route('/read-formtext', methods=['POST'])
 def read_formtext():
     data = request.get_json()
