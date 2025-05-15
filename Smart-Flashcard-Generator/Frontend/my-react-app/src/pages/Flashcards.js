@@ -19,10 +19,10 @@ const Flashcard = ({ flashcard, flipped, onFlip, index }) => {
     <div className={`${styles.flashcard} ${flipped ? styles.flipped : ""}`} onClick={onFlip}>
       
       <div className={styles.front}>
-        {flashcard[0].split("word: ")}
+        {flashcard.word}
       </div>
       <div className={styles.back}>
-        {flashcard[1].split("definition: ")}
+        {flashcard.definition}
       </div>
     </div>
   );
@@ -32,7 +32,7 @@ const Flashcard = ({ flashcard, flipped, onFlip, index }) => {
 const Flashcards = () => {
   // Sample flashcards data
   const location = useLocation();
-  const flashcardsData = Object.entries(location.state);
+  const flashcardsData = (location.state);
   console.log(flashcardsData)
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
