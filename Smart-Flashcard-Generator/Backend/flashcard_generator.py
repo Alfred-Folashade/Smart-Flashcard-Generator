@@ -113,23 +113,7 @@ def generate(text, language):
     most_common_words = most_frequent_words(cleaned_text)
     print("word", most_common_words)
     flashcards= {}
-    for word, count in most_common_words:
-        try:
-            parser = client.fetch_parser(word, LanguageCodes.FRENCH)
-            """
-            phrase = parser.word
-            meanings: list[freedictionaryapi.types.Meaning] = phrase.meanings
-            for meaning in meanings:
-                definitions: list[freedictionaryapi.types.Definition] = meaning.definitions
-            correct_definition = get_correct_definition(word, text, definitions)
-            flashcards.update({"word: " + word : "definition: " + correct_definition})
-            print(correct_definition)
-            """
-        except DictionaryApiError:
-            print('API error')
-        if language!='English':
-            for word, definition in flashcards.items():
-                flashcards[word] = asyncio.run(translate_definition(definition))
+    flashcards = get_correct_definition
 
     return flashcards
 
