@@ -5,7 +5,7 @@
   background: linear-gradient(to bottom, #87CEEB, #00BFFF);
   overflow: hidden;
   display: flex;
-  flex-direction: column;
+  gap: 10px;
   justify-content: center;
   align-items: center;
 }
@@ -87,4 +87,24 @@
 .cloud:after {
   top: -10px;
   right: 10px;
+}
+
+.leftHandSide{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.flashcardPreview{
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  max-width: 90%;
+  text-align: center;
+  z-index: 10;
+  height: 75.8%;
 }

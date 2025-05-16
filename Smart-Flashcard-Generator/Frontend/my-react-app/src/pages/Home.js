@@ -53,61 +53,63 @@ const Home = () => {
             <div className={styles.cloud} style={{top: "500px", left: "300px"}}></div>
             <div className={styles.cloud} style={{top: "600px", left: "150px"}}></div>
                    
-        
-            <div className={styles.textBoxContainer}>
-                <form onSubmit={handleSubmit} method="post">
-                    <select  name="language" value={formData.language} onChange={handleChange}>
-                        <option name = "English" value = "English">English</option>
-                        <option name ="French" value ="French">French</option>
-                        <option name ="German" value ="German">German</option>
-                    </select>
-                    <h2 className={styles.textBoxTitle}>Enter Your Text</h2>
-                    <textarea name="text" className={styles.textInput} value={formData.text} onChange={handleChange} placeholder="Type your message here..."></textarea>
-                    <button className={styles.submitButton}>Submit</button>
-                </form>
-            </div>
-            <div className={styles.textBoxContainer} style={{marginTop: "20px"}}>
-                <h2 className={styles.textBoxTitle}>Upload a file</h2>
-                <div style={{height: "140px", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    <div onClick={handleClick} 
-                        style={{
-                            width: "60px", 
-                            height: "60px", 
-                            borderRadius: "50%", 
-                            border: "2px dashed #1a73e8", 
-                            display: "flex", 
-                            justifyContent: "center", 
-                            alignItems: "center",
-                            cursor: "pointer",
-                            transition: "all 0.3s ease",
-                            backgroundColor: "transparent"
-                        }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.backgroundColor = "rgba(26, 115, 232, 0.1)";
-                            e.currentTarget.style.border = "2px solid #1a73e8";
-                            e.currentTarget.style.transform = "scale(1.05)";
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.backgroundColor = "transparent";
-                            e.currentTarget.style.border = "2px dashed #1a73e8";
-                            e.currentTarget.style.transform = "scale(1)";
-                        }}
-                    >
-                        <div style={{
-                            fontSize: "30px",
-                            color: "#1a73e8",
-                            fontWeight: "bold",
-                            lineHeight: "1",
-                            transition: "all 0.3s ease"
-                        }}>+</div>
-                    </div>
-                    <input
-                    type="file"
-                    ref={hiddenFileInputRef}
-                    style={{ display: 'none' }}
-                    />
+            <div class="leftHandSide">
+                <div className={styles.textBoxContainer}>
+                    <form onSubmit={handleSubmit} method="post">
+                        <select  name="language" value={formData.language} onChange={handleChange}>
+                            <option name = "English" value = "English">English</option>
+                            <option name ="French" value ="French">French</option>
+                            <option name ="German" value ="German">German</option>
+                        </select>
+                        <h2 className={styles.textBoxTitle}>Enter Your Text</h2>
+                        <textarea name="text" className={styles.textInput} value={formData.text} onChange={handleChange} placeholder="Type your message here..."></textarea>
+                        <button className={styles.submitButton}>Submit</button>
+                    </form>
                 </div>
+                <div className={styles.textBoxContainer} style={{marginTop: "20px"}}>
+                    <h2 className={styles.textBoxTitle}>Upload a file</h2>
+                    <div style={{height: "140px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                        <div onClick={handleClick} 
+                            style={{
+                                width: "60px", 
+                                height: "60px", 
+                                borderRadius: "50%", 
+                                border: "2px dashed #1a73e8", 
+                                display: "flex", 
+                                justifyContent: "center", 
+                                alignItems: "center",
+                                cursor: "pointer",
+                                transition: "all 0.3s ease",
+                                backgroundColor: "transparent"
+                            }}
+                            onMouseOver={(e) => {
+                                e.currentTarget.style.backgroundColor = "rgba(26, 115, 232, 0.1)";
+                                e.currentTarget.style.border = "2px solid #1a73e8";
+                                e.currentTarget.style.transform = "scale(1.05)";
+                            }}
+                            onMouseOut={(e) => {
+                                e.currentTarget.style.backgroundColor = "transparent";
+                                e.currentTarget.style.border = "2px dashed #1a73e8";
+                                e.currentTarget.style.transform = "scale(1)";
+                            }}
+                        >
+                            <div style={{
+                                fontSize: "30px",
+                                color: "#1a73e8",
+                                fontWeight: "bold",
+                                lineHeight: "1",
+                                transition: "all 0.3s ease"
+                            }}>+</div>
+                        </div>
+                        <input
+                        type="file"
+                        ref={hiddenFileInputRef}
+                        style={{ display: 'none' }}
+                        />
+                    </div>
+                </div> 
             </div>
+            <div className={styles.flashcardPreview}  ></div>
         </div>
     )
   }
