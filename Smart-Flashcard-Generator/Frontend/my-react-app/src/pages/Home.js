@@ -109,7 +109,11 @@ const Home = () => {
                     </div>
                 </div> 
             </div>
-            <div className={styles.flashcardPreview}  ></div>
+            <div className={styles.flashcardPreview}>
+                <h2>No flashcards available yet</h2>
+                <h3>Begin generating!</h3>
+                <img src="/flashcards.png" alt="flashcards"></img>
+            </div>
         </div>
     )
   }
