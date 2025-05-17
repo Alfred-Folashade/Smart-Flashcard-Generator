@@ -26,6 +26,7 @@
 .textBoxTitle {
   margin: 0 0 20px 0;
   color: #1a73e8;
+  
 }
 
 .textInput {
@@ -107,4 +108,10 @@
   text-align: center;
   z-index: 10;
   height: 75.8%;
+}
+
+.textBoxHeader{
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }

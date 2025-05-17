@@ -45,23 +45,19 @@ const Home = () => {
     return (
         
         <div className={styles.page}>
-            <div className={styles.cloud} style={{top: "50px", left: "50px"}}></div>
-            <div className={styles.cloud} style={{top: "120px", left: "200px"}}></div>
-            <div className={styles.cloud} style={{top: "200px", left: "100px"}}></div>
-            <div className={styles.cloud} style={{top: "300px", left: "250px"}}></div>
-            <div className={styles.cloud} style={{top: "400px", left: "50px"}}></div>
-            <div className={styles.cloud} style={{top: "500px", left: "300px"}}></div>
-            <div className={styles.cloud} style={{top: "600px", left: "150px"}}></div>
+
                    
             <div class="leftHandSide">
                 <div className={styles.textBoxContainer}>
                     <form onSubmit={handleSubmit} method="post">
-                        <select  name="language" value={formData.language} onChange={handleChange}>
-                            <option name = "English" value = "English">English</option>
-                            <option name ="French" value ="French">French</option>
-                            <option name ="German" value ="German">German</option>
-                        </select>
-                        <h2 className={styles.textBoxTitle}>Enter Your Text</h2>
+                        <div className={styles.textBoxHeader}>
+                            <select  name="language" value={formData.language} onChange={handleChange}>
+                                <option name = "English" value = "English">English</option>
+                                <option name ="French" value ="French">French</option>
+                                <option name ="German" value ="German">German</option>
+                            </select>
+                            <h2 className={styles.textBoxTitle}>Enter Your Text</h2>
+                        </div>
                         <textarea name="text" className={styles.textInput} value={formData.text} onChange={handleChange} placeholder="Type your message here..."></textarea>
                         <button className={styles.submitButton}>Submit</button>
                     </form>
@@ -110,8 +106,8 @@ const Home = () => {
                 </div> 
             </div>
             <div className={styles.flashcardPreview}>
-                <h2>No flashcards available yet</h2>
-                <h3>Begin generating!</h3>
+                <h2 className={styles.textBoxTitle}>No flashcards available yet</h2>
+                <h3 className={styles.textBoxTitle} >Begin generating!</h3>
                 <img src="/flashcards.png" alt="flashcards"></img>
             </div>
         </div>
