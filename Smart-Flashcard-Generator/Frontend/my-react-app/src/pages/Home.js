@@ -26,7 +26,12 @@ const Home = () => {
                 }
             });
             console.log(response.data)
-            navigate("/Flashcards", {state: response.data})
+            navigate("/Flashcards", {
+                state: {
+                responseData: response.data,
+                formData: formData}
+            }
+            );
     
            
         } catch (error) {
