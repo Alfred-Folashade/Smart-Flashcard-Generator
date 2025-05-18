@@ -83,6 +83,7 @@ const Flashcards = () => {
         <p>{currentIndex + 1} / {totalCards}</p>
       </div>
       <div className={styles.text}>
+        
         <h1>{text}</h1>
       </div>
     </div>
