@@ -33,7 +33,7 @@ const Flashcards = () => {
   // Sample flashcards data
   const location = useLocation();
   const flashcardsData = (location.state.responseData);
-  const text = (location.state.flashcardData);
+  const text = (location.state.formData);
   console.log(flashcardsData)
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
@@ -83,7 +83,7 @@ const Flashcards = () => {
         <p>{currentIndex + 1} / {totalCards}</p>
       </div>
       <div className={styles.text}>
-        <h1>hi</h1>
+        <h1>{text}</h1>
       </div>
     </div>
   );

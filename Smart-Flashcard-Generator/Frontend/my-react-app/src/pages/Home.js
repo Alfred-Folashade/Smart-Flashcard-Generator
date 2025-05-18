@@ -29,7 +29,7 @@ const Home = () => {
             navigate("/Flashcards", {
                 state: {
                 responseData: response.data,
-                formData: formData}
+                formData: formData.text}
             }
             );
     
